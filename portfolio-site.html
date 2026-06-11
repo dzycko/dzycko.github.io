@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wildan — Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F8F7F4;
+    --bg-card: #FFFFFF;
+    --bg-tag: #EEF2FF;
+    --text: #1A1A1A;
+    --text-muted: #6B7280;
+    --text-tag: #4F46E5;
+    --accent: #4F46E5;
+    --accent-soft: #EEF2FF;
+    --border: #E5E7EB;
+    --border-card: #E5E7EB;
+    --nav-bg: rgba(248,247,244,0.92);
+  }
+  [data-theme="dark"] {
+    --bg: #0F0F0F;
+    --bg-card: #1A1A1A;
+    --bg-tag: #1E1B4B;
+    --text: #F0EEE8;
+    --text-muted: #9CA3AF;
+    --text-tag: #A5B4FC;
+    --accent: #818CF8;
+    --accent-soft: #1E1B4B;
+    --border: #2A2A2A;
+    --border-card: #2A2A2A;
+    --nav-bg: rgba(15,15,15,0.92);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--nav-bg);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700; font-size: 18px;
+    color: var(--accent); text-decoration: none;
+  }
+  .nav-right { display: flex; align-items: center; gap: 1rem; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 14px; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .lang-toggle {
+    display: flex; gap: 4px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px;
+  }
+  .lang-btn {
+    padding: 3px 10px; border-radius: 16px;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer; border: none;
+    background: transparent; color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .lang-btn.active {
+    background: var(--accent); color: #fff;
+  }
+  .theme-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; transition: all 0.2s;
+  }
+  .theme-btn:hover { border-color: var(--accent); }
+
+  /* HAMBURGER */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: var(--text); border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .mobile-menu {
+    display: none; position: fixed; top: 60px; left: 0; right: 0;
+    background: var(--bg-card); border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem; z-index: 99;
+    flex-direction: column; gap: 1rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;
+  }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; max-width: 900px; margin: 0 auto; }
+  .section-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding-top: 80px;
+  }
+  .hero-eyebrow {
+    font-size: 13px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 1.25rem;
+  }
+  .hero-name {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700; line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+  .hero-name span { color: var(--accent); }
+  .hero-tagline {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--text-muted);
+    max-width: 520px;
+    margin-bottom: 2rem;
+  }
+  .hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .btn-primary {
+    padding: 0.75rem 1.75rem;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 8px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-outline {
+    padding: 0.75rem 1.75rem;
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border-card); border-radius: 8px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: start;
+  }
+  .about-text p { color: var(--text-muted); margin-bottom: 1rem; }
+  .about-text p:last-child { margin-bottom: 0; }
+  .about-highlights { display: flex; flex-direction: column; gap: 1rem; }
+  .highlight-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+  }
+  .highlight-card .hc-label {
+    font-size: 12px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem;
+  }
+  .highlight-card .hc-value {
+    font-size: 15px; font-weight: 500; color: var(--text);
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+  }
+  .skill-group {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .skill-group-title {
+    font-size: 12px; font-weight: 600; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
+    background: var(--bg-tag); color: var(--text-tag);
+    font-size: 12px; font-weight: 500;
+    padding: 4px 10px; border-radius: 20px;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: 14px;
+    padding: 1.5rem;
+    display: flex; flex-direction: column;
+    transition: border-color 0.2s;
+  }
+  .project-card:hover { border-color: var(--accent); }
+  .project-domain {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .project-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 16px; font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .project-problem {
+    font-size: 13px; color: var(--text-muted);
+    margin-bottom: 1rem; flex: 1;
+  }
+  .project-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+  .project-links { display: flex; gap: 0.75rem; }
+  .project-links a {
+    font-size: 13px; font-weight: 600;
+    color: var(--accent); text-decoration: none;
+    border: 1px solid var(--accent);
+    padding: 4px 12px; border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .project-links a:hover { background: var(--accent); color: #fff; }
+  .coming-soon {
+    font-size: 12px; color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* EXPERIENCE */
+  .exp-list { display: flex; flex-direction: column; gap: 1.25rem; }
+  .exp-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 0.25rem 1rem;
+  }
+  .exp-role { font-weight: 600; font-size: 15px; }
+  .exp-company { color: var(--text-muted); font-size: 14px; }
+  .exp-period {
+    font-size: 13px; color: var(--text-muted);
+    text-align: right; white-space: nowrap;
+  }
+  .exp-desc {
+    grid-column: 1 / -1;
+    font-size: 13px; color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  /* EDUCATION */
+  .edu-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+  .edu-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+  }
+  .edu-institution { font-weight: 600; font-size: 15px; margin-bottom: 0.25rem; }
+  .edu-detail { font-size: 13px; color: var(--text-muted); }
+  .edu-badge {
+    display: inline-block;
+    margin-top: 0.5rem;
+    background: var(--bg-tag); color: var(--text-tag);
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 20px;
+  }
+
+  /* CONTACT */
+  .contact-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+  }
+  .contact-wrap h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.75rem; font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .contact-wrap p { color: var(--text-muted); margin-bottom: 1.75rem; }
+  .contact-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none; color: var(--text);
+    font-size: 14px; font-weight: 500;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* DIVIDER */
+  .section-divider {
+    border: none; border-top: 1px solid var(--border);
+    max-width: 900px; margin: 0 auto;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    nav { padding: 0 1.25rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    section { padding: 3.5rem 1.25rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .exp-item { grid-template-columns: 1fr; }
+    .exp-period { text-align: left; }
+    .contact-wrap { padding: 1.75rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">WD.</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
+      <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
+      <li><a href="#projects" data-i18n="nav_projects">Projects</a></li>
+      <li><a href="#experience" data-i18n="nav_experience">Experience</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+    </ul>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('id')">ID</button>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme" id="theme-icon">🌙</button>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" onclick="closeMenu()" data-i18n="nav_about">About</a>
+  <a href="#skills" onclick="closeMenu()" data-i18n="nav_skills">Skills</a>
+  <a href="#projects" onclick="closeMenu()" data-i18n="nav_projects">Projects</a>
+  <a href="#experience" onclick="closeMenu()" data-i18n="nav_experience">Experience</a>
+  <a href="#contact" onclick="closeMenu()" data-i18n="nav_contact">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-eyebrow" data-i18n="hero_eyebrow">Data Analyst · Jakarta, Indonesia</p>
+  <h1 class="hero-name">Wildan<br><span>Dzulfaqor.</span></h1>
+  <p class="hero-tagline" data-i18n="hero_tagline">
+    Management background meets data skills — translating business context into clear, actionable insights.
+  </p>
+  <div class="hero-btns">
+    <a href="#projects" class="btn-primary" data-i18n="hero_cta_projects">View Projects</a>
+    <a href="cv.pdf" target="_blank" class="btn-outline" data-i18n="hero_cta_cv">View CV</a>
+    <a href="https://linkedin.com" target="_blank" class="btn-outline">LinkedIn</a>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label" data-i18n="label_about">About</p>
+  <div class="about-grid">
+    <div class="about-text">
+      <p data-i18n="about_p1">
+        I'm a Management graduate from Universitas Islam Indonesia (GPA 3.82) with hands-on experience across banking, healthcare, and insurance — now focused on data analytics.
+      </p>
+      <p data-i18n="about_p2">
+        Through the Pacmann Data Science program, I built working skills in Python, SQL, and Pandas. What sets me apart is the ability to frame data problems in business terms — a gap that's common among purely technical candidates.
+      </p>
+      <p data-i18n="about_p3">
+        My goal is to grow into a Data Scientist role and eventually pursue a master's degree abroad. Right now, I'm building a portfolio focused on Indonesian business and finance contexts.
+      </p>
+    </div>
+    <div class="about-highlights">
+      <div class="highlight-card">
+        <div class="hc-label" data-i18n="hc_edu">Education</div>
+        <div class="hc-value">UII Management — GPA 3.82</div>
+      </div>
+      <div class="highlight-card">
+        <div class="hc-label" data-i18n="hc_training">Training</div>
+        <div class="hc-value">Pacmann Data Science Program</div>
+      </div>
+      <div class="highlight-card">
+        <div class="hc-label" data-i18n="hc_lang">Languages</div>
+        <div class="hc-value" data-i18n="hc_lang_val">Indonesian (Native) · English (IELTS 7.0)</div>
+      </div>
+      <div class="highlight-card">
+        <div class="hc-label" data-i18n="hc_cert">Certification</div>
+        <div class="hc-value">SAP Certified</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label" data-i18n="label_skills">Skills</p>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <div class="skill-group-title" data-i18n="skills_analytics">Analytics</div>
+      <div class="skill-tags">
+        <span class="tag">Python</span>
+        <span class="tag">SQL</span>
+        <span class="tag">Pandas</span>
+        <span class="tag">EDA</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title" data-i18n="skills_tools">Tools</div>
+      <div class="skill-tags">
+        <span class="tag">Excel</span>
+        <span class="tag">SAP</span>
+        <span class="tag">GitHub</span>
+        <span class="tag">Kaggle</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title" data-i18n="skills_domain">Domain</div>
+      <div class="skill-tags">
+        <span class="tag" data-i18n="tag_finance">Finance</span>
+        <span class="tag" data-i18n="tag_banking">Banking</span>
+        <span class="tag" data-i18n="tag_healthcare">Healthcare</span>
+        <span class="tag" data-i18n="tag_operations">Operations</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title" data-i18n="skills_soft">Business</div>
+      <div class="skill-tags">
+        <span class="tag" data-i18n="tag_market_research">Market Research</span>
+        <span class="tag" data-i18n="tag_reporting">Reporting</span>
+        <span class="tag" data-i18n="tag_comm">Communication</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label" data-i18n="label_projects">Projects</p>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-domain" data-i18n="proj1_domain">Finance · Banking</div>
+      <div class="project-title" data-i18n="proj1_title">Credit Risk Analysis</div>
+      <div class="project-problem" data-i18n="proj1_problem">
+        What factors predict loan default risk? An exploratory and predictive analysis using public banking data — relevant to Indonesian lending contexts.
+      </div>
+      <div class="project-tech">
+        <span class="tag">Python</span>
+        <span class="tag">SQL</span>
+        <span class="tag">Pandas</span>
+      </div>
+      <div class="coming-soon" data-i18n="coming_soon">Coming soon</div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-domain" data-i18n="proj2_domain">Retail · Operations</div>
+      <div class="project-title" data-i18n="proj2_title">Customer Segmentation</div>
+      <div class="project-problem" data-i18n="proj2_problem">
+        How can businesses group customers to improve targeting? RFM-based segmentation applied to Indonesian retail or e-commerce data.
+      </div>
+      <div class="project-tech">
+        <span class="tag">Python</span>
+        <span class="tag">Pandas</span>
+        <span class="tag">Clustering</span>
+      </div>
+      <div class="coming-soon" data-i18n="coming_soon">Coming soon</div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-domain" data-i18n="proj3_domain">Healthcare · Insurance</div>
+      <div class="project-title" data-i18n="proj3_title">Claims Data Analysis</div>
+      <div class="project-problem" data-i18n="proj3_problem">
+        What patterns exist in insurance claims data? An operational analysis exploring anomaly detection and cost drivers.
+      </div>
+      <div class="project-tech">
+        <span class="tag">Python</span>
+        <span class="tag">SQL</span>
+        <span class="tag">Excel</span>
+      </div>
+      <div class="coming-soon" data-i18n="coming_soon">Coming soon</div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="section-label" data-i18n="label_experience">Experience</p>
+  <div class="exp-list">
+
+    <div class="exp-item">
+      <div class="exp-role" data-i18n="exp1_role">Administration & Market Research</div>
+      <div class="exp-period">2025 – Present</div>
+      <div class="exp-company">Noble Medical</div>
+      <div class="exp-desc" data-i18n="exp1_desc">AP/AR administration, market research, partnerships, and business development support.</div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-role" data-i18n="exp2_role">Document Verification</div>
+      <div class="exp-period">2023 – 2024</div>
+      <div class="exp-company">AdMedika (Telkom Indonesia)</div>
+      <div class="exp-desc" data-i18n="exp2_desc">Verified and processed insurance claim documents; handled data validation across operational workflows.</div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-role" data-i18n="exp3_role">Banking Intern</div>
+      <div class="exp-period">2022</div>
+      <div class="exp-company">Bank Rakyat Indonesia (BRI)</div>
+      <div class="exp-desc" data-i18n="exp3_desc">Supported banking operations; gained exposure to financial data handling and validation processes.</div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- EDUCATION -->
+<section id="education">
+  <p class="section-label" data-i18n="label_education">Education & Certifications</p>
+  <div class="edu-grid">
+    <div class="edu-card">
+      <div class="edu-institution">Universitas Islam Indonesia</div>
+      <div class="edu-detail" data-i18n="edu1_detail">S1 Management · GPA 3.82</div>
+      <span class="edu-badge">2019 – 2023</span>
+    </div>
+    <div class="edu-card">
+      <div class="edu-institution">Pacmann</div>
+      <div class="edu-detail" data-i18n="edu2_detail">Data Science Program</div>
+      <span class="edu-badge">2024</span>
+    </div>
+    <div class="edu-card">
+      <div class="edu-institution">SAP</div>
+      <div class="edu-detail" data-i18n="edu3_detail">SAP Certified</div>
+      <span class="edu-badge">Certified</span>
+    </div>
+    <div class="edu-card">
+      <div class="edu-institution">IELTS</div>
+      <div class="edu-detail" data-i18n="edu4_detail">Score 7.0 (Band C1)</div>
+      <span class="edu-badge">English</span>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrap">
+    <h2 data-i18n="contact_heading">Let's connect</h2>
+    <p data-i18n="contact_sub">Open to data analyst roles and project collaborations in Indonesia.</p>
+    <div class="contact-links">
+      <a href="mailto:wildandzulfaqor@gmail.com" class="contact-link">✉️ Email</a>
+      <a href="https://linkedin.com/in/wildan-dzulfaqor" target="_blank" class="contact-link">in LinkedIn</a>
+      <a href="https://github.com/wildandzulfaqor" target="_blank" class="contact-link">⌥ GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span data-i18n="footer_text">Built by Wildan Dzulfaqor · Data Analyst</span>
+</footer>
+
+<script>
+const i18n = {
+  en: {
+    nav_about: "About", nav_skills: "Skills", nav_projects: "Projects",
+    nav_experience: "Experience", nav_contact: "Contact",
+    hero_eyebrow: "Data Analyst · Jakarta, Indonesia",
+    hero_tagline: "Management background meets data skills — translating business context into clear, actionable insights.",
+    hero_cta_projects: "View Projects", hero_cta_cv: "View CV",
+    label_about: "About", label_skills: "Skills", label_projects: "Projects",
+    label_experience: "Experience", label_education: "Education & Certifications",
+    about_p1: "I'm a Management graduate from Universitas Islam Indonesia (GPA 3.82) with hands-on experience across banking, healthcare, and insurance — now focused on data analytics.",
+    about_p2: "Through the Pacmann Data Science program, I built working skills in Python, SQL, and Pandas. What sets me apart is the ability to frame data problems in business terms — a gap that's common among purely technical candidates.",
+    about_p3: "My goal is to grow into a Data Scientist role and eventually pursue a master's degree abroad. Right now, I'm building a portfolio focused on Indonesian business and finance contexts.",
+    hc_edu: "Education", hc_training: "Training", hc_lang: "Languages",
+    hc_lang_val: "Indonesian (Native) · English (IELTS 7.0)", hc_cert: "Certification",
+    skills_analytics: "Analytics", skills_tools: "Tools", skills_domain: "Domain", skills_soft: "Business",
+    tag_finance: "Finance", tag_banking: "Banking", tag_healthcare: "Healthcare",
+    tag_operations: "Operations", tag_market_research: "Market Research",
+    tag_reporting: "Reporting", tag_comm: "Communication",
+    proj1_domain: "Finance · Banking", proj1_title: "Credit Risk Analysis",
+    proj1_problem: "What factors predict loan default risk? An exploratory and predictive analysis using public banking data — relevant to Indonesian lending contexts.",
+    proj2_domain: "Retail · Operations", proj2_title: "Customer Segmentation",
+    proj2_problem: "How can businesses group customers to improve targeting? RFM-based segmentation applied to Indonesian retail or e-commerce data.",
+    proj3_domain: "Healthcare · Insurance", proj3_title: "Claims Data Analysis",
+    proj3_problem: "What patterns exist in insurance claims data? An operational analysis exploring anomaly detection and cost drivers.",
+    coming_soon: "Coming soon",
+    exp1_role: "Administration & Market Research", exp1_desc: "AP/AR administration, market research, partnerships, and business development support.",
+    exp2_role: "Document Verification", exp2_desc: "Verified and processed insurance claim documents; handled data validation across operational workflows.",
+    exp3_role: "Banking Intern", exp3_desc: "Supported banking operations; gained exposure to financial data handling and credit processes.",
+    edu1_detail: "S1 Management · GPA 3.82", edu2_detail: "Data Science Program",
+    edu3_detail: "SAP Certified", edu4_detail: "Score 7.0 (Band C1)",
+    contact_heading: "Let's connect",
+    contact_sub: "Open to data analyst roles and project collaborations in Indonesia.",
+    footer_text: "Built by Wildan Dzulfaqor · Data Analyst"
+  },
+  id: {
+    nav_about: "Tentang", nav_skills: "Keahlian", nav_projects: "Proyek",
+    nav_experience: "Pengalaman", nav_contact: "Kontak",
+    hero_eyebrow: "Data Analyst · Jakarta, Indonesia",
+    hero_tagline: "Latar belakang manajemen bertemu dengan keahlian data — menerjemahkan konteks bisnis menjadi wawasan yang jelas dan dapat ditindaklanjuti.",
+    hero_cta_projects: "Lihat Proyek", hero_cta_cv: "Lihat CV",
+    label_about: "Tentang", label_skills: "Keahlian", label_projects: "Proyek",
+    label_experience: "Pengalaman", label_education: "Pendidikan & Sertifikasi",
+    about_p1: "Saya lulusan Manajemen dari Universitas Islam Indonesia (IPK 3.82) dengan pengalaman langsung di perbankan, kesehatan, dan asuransi — kini berfokus pada analitik data.",
+    about_p2: "Melalui program Data Science Pacmann, saya membangun keahlian kerja di Python, SQL, dan Pandas. Yang membedakan saya adalah kemampuan untuk merumuskan masalah data dalam istilah bisnis.",
+    about_p3: "Tujuan saya adalah berkembang menjadi Data Scientist dan pada akhirnya melanjutkan studi S2 di luar negeri. Saat ini saya sedang membangun portofolio yang berfokus pada konteks bisnis dan keuangan Indonesia.",
+    hc_edu: "Pendidikan", hc_training: "Pelatihan", hc_lang: "Bahasa",
+    hc_lang_val: "Indonesia (Asli) · Inggris (IELTS 7.0)", hc_cert: "Sertifikasi",
+    skills_analytics: "Analitik", skills_tools: "Alat", skills_domain: "Domain", skills_soft: "Bisnis",
+    tag_finance: "Keuangan", tag_banking: "Perbankan", tag_healthcare: "Kesehatan",
+    tag_operations: "Operasional", tag_market_research: "Riset Pasar",
+    tag_reporting: "Pelaporan", tag_comm: "Komunikasi",
+    proj1_domain: "Keuangan · Perbankan", proj1_title: "Analisis Risiko Kredit",
+    proj1_problem: "Faktor apa yang memprediksi risiko gagal bayar pinjaman? Analisis eksplorasi dan prediktif menggunakan data perbankan publik — relevan dengan konteks pinjaman Indonesia.",
+    proj2_domain: "Ritel · Operasional", proj2_title: "Segmentasi Pelanggan",
+    proj2_problem: "Bagaimana bisnis dapat mengelompokkan pelanggan untuk meningkatkan penargetan? Segmentasi berbasis RFM yang diterapkan pada data ritel atau e-commerce Indonesia.",
+    proj3_domain: "Kesehatan · Asuransi", proj3_title: "Analisis Data Klaim",
+    proj3_problem: "Pola apa yang ada dalam data klaim asuransi? Analisis operasional yang mengeksplorasi deteksi anomali dan pendorong biaya.",
+    coming_soon: "Segera hadir",
+    exp1_role: "Administrasi & Riset Pasar", exp1_desc: "Administrasi AP/AR, riset pasar, kemitraan, dan dukungan pengembangan bisnis.",
+    exp2_role: "Verifikasi Dokumen", exp2_desc: "Memverifikasi dan memproses dokumen klaim asuransi; menangani validasi data di seluruh alur kerja operasional.",
+    exp3_role: "Magang Perbankan", exp3_desc: "Mendukung operasional perbankan; mendapat eksposur terhadap penanganan data keuangan dan proses validasi.",
+    edu1_detail: "S1 Manajemen · IPK 3.82", edu2_detail: "Program Data Science",
+    edu3_detail: "Bersertifikat SAP", edu4_detail: "Skor 7.0 (Band C1)",
+    contact_heading: "Mari terhubung",
+    contact_sub: "Terbuka untuk peran analis data dan kolaborasi proyek di Indonesia.",
+    footer_text: "Dibuat oleh Wildan Dzulfaqor · Data Analyst"
+  }
+};
+
+let currentLang = 'en';
+let currentTheme = 'light';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang][key]) el.textContent = i18n[lang][key];
+  });
+}
+
+function toggleTheme() {
+  currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'dark' : '');
+  document.getElementById('theme-icon').textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+}
+
+function toggleMenu() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('mobile-menu').classList.remove('open');
+}
+
+// Respect system preference on load
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  currentTheme = 'dark';
+  document.documentElement.setAttribute('data-theme', 'dark');
+  document.getElementById('theme-icon').textContent = '☀️';
+}
+</script>
+</body>
+</html>
